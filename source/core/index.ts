@@ -189,6 +189,7 @@ export interface HTTPSOptions {
 	key?: SecureContextOptions['key'];
 	certificate?: SecureContextOptions['cert'];
 	passphrase?: SecureContextOptions['passphrase'];
+	pfx?: SecureContextOptions['pfx'];
 }
 
 interface NormalizedPlainOptions extends PlainOptions {
@@ -686,6 +687,7 @@ export default class Request extends Duplex implements RequestEvents<Request> {
 			assert.any([is.string, is.object, is.array, is.undefined], options.https.key);
 			assert.any([is.string, is.object, is.array, is.undefined], options.https.certificate);
 			assert.any([is.string, is.undefined], options.https.passphrase);
+			assert.any([is.string, is.buffer, is.array, is.undefined], options.https.pfx);
 		}
 
 		// `options.method`
@@ -975,6 +977,10 @@ export default class Request extends Duplex implements RequestEvents<Request> {
 
 		if ('passphrase' in options) {
 			deprecationWarning('"options.passphrase" was never documented, please use "options.https.passphrase"');
+		}
+
+		if ('pfx' in options) {
+			deprecationWarning('"options.pfx" was never documented, please use "options.https.pfx"');
 		}
 
 		// Other options
@@ -1528,6 +1534,10 @@ export default class Request extends Duplex implements RequestEvents<Request> {
 
 			if (options.https.passphrase) {
 				requestOptions.passphrase = options.https.passphrase;
+			}
+
+			if (options.https.pfx) {
+				requestOptions.pfx = options.https.pfx;
 			}
 		}
 
